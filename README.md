@@ -1,7 +1,33 @@
+
 # Bhitte Patro
+
+<p align="center">
+  <img width="100" height="100" alt="logo" src="https://github.com/user-attachments/assets/f0970223-6f0b-4709-bdc9-ad6856b323f2" />
+</p>
 
 Bhitte Patro is a modern, feature-rich Nepali calendar, scheduling, and news aggregator application built with Flutter. It provides a traditional Bikram Sambat (BS) calendar, a task scheduler that syncs with Google Calendar, real-time weather and astronomical tracking, an interactive globe simulation, and a daily news feed aggregated from scraped Nepalese online portals.
 
+
+<div style="width: 100%; overflow-x: auto; margin: 20px 0; font-family: sans-serif;">
+  <table style="width: 100%; border-collapse: collapse; text-align: center;">
+    <thead>
+      <tr>
+        <th style="padding: 15px; border: 1px solid #ccc; background-color: #f4f4f4; font-weight: bold;">Screenshot 1</th>
+        <th style="padding: 15px; border: 1px solid #ccc; background-color: #f4f4f4; font-weight: bold;">Screenshot 2</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 15px; border: 1px solid #ccc; vertical-align: top;">
+          <img width="400" height="900" alt="simulator_screenshot_328A473F-2466-4690-8C58-AC1AC403F3F6" src="https://github.com/user-attachments/assets/cd7f6206-a9c8-433b-9361-bdd33b5341f0" style="max-width: 100%; height: auto;" />
+        </td>
+        <td style="padding: 15px; border: 1px solid #ccc; vertical-align: top;">
+          <img width="400" height="900" alt="simulator_screenshot_9EF0CB89-20B5-480D-BFD5-58BE4F5F9948" src="https://github.com/user-attachments/assets/0e1732a1-3195-4620-a2eb-b084dc3906b2" style="max-width: 100%; height: auto;" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 ---
 
 ## Key Features
