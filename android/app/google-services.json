@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "236364759427",
+    "project_id": "bhittepatro-256bc",
+    "storage_bucket": "bhittepatro-256bc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236364759427:android:0a642cf0e68b5bbf83f6b6",
+        "android_client_info": {
+          "package_name": "com.example.bhitte_patro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "236364759427-afvfsj8006s6njd5hc6s5a8surk16mtk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bhitte_patro",
+            "certificate_hash": "84b1a92356eed45aedf980bf8c45808e90b3360e"
+          }
+        },
+        {
+          "client_id": "236364759427-pnkjbspq2r9s3tp5oj3fu9jh0h5f3rog.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeO91A67H7muqqJSajgj1NFOZSdq95mtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "236364759427-pnkjbspq2r9s3tp5oj3fu9jh0h5f3rog.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "236364759427-aiebfqtpthrl4a2pepl4u2rol0lp3oeo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bhittePatro"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236364759427:android:9a20e013a2a31aa383f6b6",
+        "android_client_info": {
+          "package_name": "com.pranab.bhitte_patro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "236364759427-pnkjbspq2r9s3tp5oj3fu9jh0h5f3rog.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeO91A67H7muqqJSajgj1NFOZSdq95mtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "236364759427-pnkjbspq2r9s3tp5oj3fu9jh0h5f3rog.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "236364759427-aiebfqtpthrl4a2pepl4u2rol0lp3oeo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bhittePatro"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
