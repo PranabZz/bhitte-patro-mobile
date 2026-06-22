@@ -7,7 +7,6 @@ import 'package:bhitte_patro/core/providers/weather_provider.dart';
 import 'package:bhitte_patro/core/utils/nepali_date_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DateDetailsView extends ConsumerWidget {
   final int day;
@@ -23,6 +22,64 @@ class DateDetailsView extends ConsumerWidget {
     required this.calendarData,
   });
 
+  static const List<String> _nepaliMonths = [
+    'बैशाख',
+    'जेठ',
+    'असार',
+    'साउन',
+    'भदौ',
+    'असोज',
+    'कात्तिक',
+    'मंसिर',
+    'पुस',
+    'माघ',
+    'फागुन',
+    'चैत',
+  ];
+
+  static const List<String> _weekDays = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  static const List<String> _enMonths = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  static const List<String> _tithiNames = [
+    'प्रतिपदा',
+    'द्वितीया',
+    'तृतीया',
+    'चतुर्थी',
+    'पञ्चमी',
+    'षष्ठी',
+    'सप्तमी',
+    'अष्टमी',
+    'नवमी',
+    'दशमी',
+    'एकादशी',
+    'द्वादशी',
+    'त्रयोदशी',
+    'चतुर्दशी',
+    'पूर्णिमा/औंसी',
+  ];
+
   String _toNepaliNumber(int number) {
     const digits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
     return number.toString().split('').map((e) => digits[int.parse(e)]).join();
@@ -30,279 +87,301 @@ class DateDetailsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final adDate = NepaliDateConverter.convertToAd(
-        year, month, day, calendarData['monthDaysData']);
-
-    final now = DateTime.now();
     final monthDaysData = calendarData['monthDaysData'] as Map<String, dynamic>;
-    final todayBs = NepaliDateConverter.convertToBs(now, monthDaysData);
-    final isToday = (day == todayBs['day'] &&
+
+    final adDate = NepaliDateConverter.convertToAd(
+      year,
+      month,
+      day,
+      monthDaysData,
+    );
+    final todayBs = NepaliDateConverter.convertToBs(
+      DateTime.now(),
+      monthDaysData,
+    );
+
+    final isToday =
+        (day == todayBs['day'] &&
         month == todayBs['month'] &&
         year == todayBs['year']);
 
     final weatherAsync = ref.watch(weatherProvider);
+    final sunAsync = ref.watch(sunTimesProvider);
 
-    final weekDays = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday'
-    ];
-    final dayOfWeek = weekDays[adDate.weekday % 7];
-    final dateTitle = isToday ? "Today" : dayOfWeek;
-
-    final nepaliMonths = [
-      'बैशाख',
-      'जेठ',
-      'असार',
-      'साउन',
-      'भदौ',
-      'असोज',
-      'कात्तिक',
-      'मंसिर',
-      'पुस',
-      'माघ',
-      'फागुन',
-      'चैत'
-    ];
-    final enMonths = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec'
-    ];
-
-    final tithiList = calendarData['tithi']?['$year']?['$month'];
-    final tithiNames = [
-      'प्रतिपदा',
-      'द्वितीया',
-      'तृतीया',
-      'चतुर्थी',
-      'पञ्चमी',
-      'षष्ठी',
-      'सप्तमी',
-      'अष्टमी',
-      'नवमी',
-      'दशमी',
-      'एकादशी',
-      'द्वादशी',
-      'त्रयोदशी',
-      'चतुर्दशी',
-      'पूर्णिमा/औंसी'
-    ];
+    final dayOfWeek = _weekDays[adDate.weekday % 7];
+    final dateTitle = isToday ? "Today" : dayOfWeek.toUpperCase();
 
     String tithiText = "";
-    if (tithiList != null && tithiList is List && day <= tithiList.length) {
+    final tithiList = calendarData['tithi']?['$year']?['$month'];
+    if (tithiList is List && day <= tithiList.length) {
       final tithiId = tithiList[day - 1];
-      if (tithiId >= 1 && tithiId <= 15) tithiText = tithiNames[tithiId - 1];
+      if (tithiId >= 1 && tithiId <= 15) {
+        tithiText = _tithiNames[tithiId - 1];
+      }
     }
 
     final holidayList = calendarData['holidays']?['$year']?['$month']?['$day'];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpace.small,
+        vertical: AppSpace.large,
+      ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(dateTitle,
-              style: AppTypography.boldSubtitle
-                  .copyWith(fontSize: 18, color: Colors.grey.shade800)),
-          const SizedBox(height: AppSpace.small),
-          // Main Date Card
+          // Minimalist Header Text
+          Text(dateTitle, style: AppTypography.boldSubtitle),
+          const SizedBox(height: 12),
+
+          // Editorial Clean Card Layout
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(AppSpace.large),
             decoration: BoxDecoration(
               color: AppColors.darkBlue,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(4), // Flat, sharp design feel
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "${_toNepaliNumber(day)} ${nepaliMonths[month - 1]} ${_toNepaliNumber(year)}",
-                        style: AppTypography.boldTitle.copyWith(
-                          color: Colors.white,
-                          fontSize: AppFontSize.xxxLarge,
-                          height: 1.2,
-                        ),
-                      ),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Left Side Frame
+                  SizedBox(
+                    width: 160,
+                    child: Image.asset(
+                      'assets/month/$month.jpg',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          Container(color: Colors.white.withOpacity(0.05)),
                     ),
-                    const SizedBox(width: AppSpace.medium),
-                    if (isToday) _buildSunInfo(ref),
-                  ],
-                ),
-                const SizedBox(height: AppSpace.large),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        spacing: 8,
-                        runSpacing: 8,
+                  ),
+
+                  // Right Side Information Panel
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildDetailChip(
-                              "${enMonths[adDate.month - 1]} ${adDate.day}, ${adDate.year}"),
-                          if (tithiText.isNotEmpty)
-                            _buildDetailChip("Tithi: $tithiText"),
-                          if (holidayList != null)
-                            _buildDetailChip(
-                                holidayList is List
-                                    ? holidayList.join(", ")
-                                    : holidayList.toString(),
-                                isHoliday: true),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _toNepaliNumber(day),
+                                style: AppTypography.boldTitle.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 46,
+                                  fontWeight:
+                                      FontWeight.w300, // Clean typography
+                                  height: 1.0,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                "${_nepaliMonths[month - 1]} ${_toNepaliNumber(year)}",
+                                style: AppTypography.caption.copyWith(
+                                  color: Colors.white.withOpacity(0.7),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 24),
+
+                          // Text-driven data rows (No icon pill shapes)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildTextRow(
+                                label: "English Date",
+                                value:
+                                    "${_enMonths[adDate.month - 1]} ${adDate.day}, ${adDate.year}",
+                              ),
+                              if (tithiText.isNotEmpty) ...[
+                                const SizedBox(height: 6),
+                                _buildTextRow(label: "Tithi", value: tithiText),
+                              ],
+                              if (holidayList != null) ...[
+                                const SizedBox(height: 6),
+                                _buildTextRow(
+                                  label: "Holiday",
+                                  value: holidayList is List
+                                      ? holidayList.join(", ")
+                                      : holidayList.toString(),
+                                  isImportant: true,
+                                ),
+                              ],
+                              if (isToday) ...[
+                                const SizedBox(height: 6),
+                                weatherAsync.when(
+                                  data: (w) => _buildTextRow(
+                                    label: "Weather",
+                                    value: "${w.temperature}°C",
+                                  ),
+                                  loading: () => _buildTextRow(
+                                    label: "Weather",
+                                    value: "Loading...",
+                                  ),
+                                  error: (_, __) => const SizedBox.shrink(),
+                                ),
+                              ],
+                            ],
+                          ),
                         ],
                       ),
                     ),
-                    const SizedBox(width: AppSpace.medium),
-                    if (isToday)
-                      weatherAsync.when(
-                        data: (weather) => _buildSunItem(
-                            FontAwesomeIcons.temperatureHalf,
-                            "${weather.temperature}°C"),
-                        loading: () => _buildSunItem(
-                            FontAwesomeIcons.temperatureHalf, "..."),
-                        error: (e, s) =>
-                            _buildSunItem(FontAwesomeIcons.temperatureHalf, "N/A"),
-                      ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
+
+          // Secondary Details block if it is today
+          if (isToday) ...[
+            const SizedBox(height: 12),
+            _buildSunMetricsTimeline(sunAsync),
+          ],
+
           const SizedBox(height: AppSpace.large),
-          // Upcoming Holiday Section
-          _buildUpcomingHoliday(calendarData),
+
+          // Next Holiday Block
+          _buildUpcomingHoliday(calendarData, adDate, monthDaysData),
         ],
       ),
     );
   }
 
-  Widget _buildSunInfo(WidgetRef ref) {
-    final sunAsync = ref.watch(sunTimesProvider);
-
-    // Format a DateTime to "h:mm AM/PM"
-    String fmt(DateTime dt) {
-      final hour = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
-      final min = dt.minute.toString().padLeft(2, '0');
-      final period = dt.hour < 12 ? 'AM' : 'PM';
-      return '$hour:$min $period';
-    }
-
-    final sunriseLabel = sunAsync.when(
-      data: (t) => fmt(t.sunrise),
-      loading: () => '–:–',
-      error: (e, s) => '–:–',
-    );
-    final sunsetLabel = sunAsync.when(
-      data: (t) => fmt(t.sunset),
-      loading: () => '–:–',
-      error: (e, s) => '–:–',
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        _buildSunItem(FontAwesomeIcons.sun, sunriseLabel),
-        const SizedBox(height: 8),
-        _buildSunItem(FontAwesomeIcons.moon, sunsetLabel),
-      ],
-    );
-  }
-
-  Widget _buildSunItem(dynamic icon, String time) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        FaIcon(icon, color: Colors.white.withOpacity(0.7), size: 14),
-        const SizedBox(width: 6),
-        Text(
-          time,
-          style: AppTypography.caption.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 12,
+  Widget _buildTextRow({
+    required String label,
+    required String value,
+    bool isImportant = false,
+  }) {
+    return RichText(
+      text: TextSpan(
+        style: AppTypography.caption.copyWith(fontSize: 13),
+        children: [
+          TextSpan(
+            text: "$label: ",
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.4),
+              fontWeight: FontWeight.w400,
+            ),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDetailChip(String text, {bool isHoliday = false}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-      decoration: BoxDecoration(
-        color: isHoliday ? Colors.red.withOpacity(0.2) : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: isHoliday ? Colors.red : Colors.white.withOpacity(0.4),
-          width: 1,
-        ),
-      ),
-      child: Text(
-        text,
-        style: AppTypography.caption.copyWith(
-          color: isHoliday ? Colors.red : Colors.white,
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
-        ),
+          TextSpan(
+            text: value,
+            style: TextStyle(
+              color: isImportant
+                  ? Colors.red.shade300
+                  : Colors.white.withOpacity(0.9),
+              fontWeight: isImportant ? FontWeight.w600 : FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildUpcomingHoliday(Map<String, dynamic> calendarData) {
+  Widget _buildSunMetricsTimeline(AsyncValue<dynamic> sunAsync) {
+    final String sunrise = sunAsync.when(
+      data: (t) => _formatTime(t.sunrise),
+      loading: () => '–:–',
+      error: (_, __) => '–:–',
+    );
+    final String sunset = sunAsync.when(
+      data: (t) => _formatTime(t.sunset),
+      loading: () => '–:–',
+      error: (_, __) => '–:–',
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      child: Row(
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.wb_sunny_outlined,
+                size: 14,
+                color: Colors.grey.shade600,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                "Sunrise: $sunrise",
+                style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+              ),
+            ],
+          ),
+          const SizedBox(width: 16),
+          Row(
+            children: [
+              Icon(
+                Icons.nights_stay_outlined,
+                size: 14,
+                color: Colors.grey.shade600,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                "Sunset: $sunset",
+                style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatTime(DateTime dt) {
+    final hour = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
+    final min = dt.minute.toString().padLeft(2, '0');
+    final period = dt.hour < 12 ? 'AM' : 'PM';
+    return '$hour:$min $period';
+  }
+
+  Widget _buildUpcomingHoliday(
+    Map<String, dynamic> calendarData,
+    DateTime currentAd,
+    Map<String, dynamic> monthDaysData,
+  ) {
     final holidays = calendarData['holidays'] as Map<String, dynamic>?;
-    String upcomingTitle = "No upcoming holidays";
-    String upcomingDate = "";
-    String daysRemainingText = "";
+
+    String title = "No upcoming holidays";
+    String date = "";
+    String remaining = "";
 
     if (holidays != null) {
-      DateTime currentAd = NepaliDateConverter.convertToAd(
-          year, month, day, calendarData['monthDaysData']);
-      DateTime limitAd = currentAd.add(const Duration(days: 90));
-
+      final limit = currentAd.add(const Duration(days: 90));
       bool found = false;
 
       for (int y = year; y <= year + 1; y++) {
         for (int m = 1; m <= 12; m++) {
-          final monthHolidays = holidays['$y']?['$m'] as Map<String, dynamic>?;
-          if (monthHolidays != null) {
-            for (var d in monthHolidays.keys) {
-              int dInt = int.parse(d);
-              DateTime holidayAd = NepaliDateConverter.convertToAd(
-                  y, m, dInt, calendarData['monthDaysData']);
+          final monthData = holidays['$y']?['$m'];
 
-              if (holidayAd.isAfter(currentAd) && holidayAd.isBefore(limitAd)) {
-                final holidayValue = monthHolidays[d];
-                if (holidayValue is List) {
-                  upcomingTitle = holidayValue.join(", ");
-                } else {
-                  upcomingTitle = holidayValue.toString();
-                }
-                upcomingDate =
-                    "${_toNepaliNumber(dInt)} ${['', 'बैशाख', 'जेठ', 'असार', 'साउन', 'भदौ', 'असोज', 'कात्तिक', 'मंसिर', 'पुस', 'माघ', 'फागुन', 'चैत'][m]}";
-                
-                final daysRemaining = holidayAd.difference(currentAd).inDays;
-                daysRemainingText = daysRemaining == 1 ? "Tomorrow" : "In $daysRemaining days";
-                
+          if (monthData is Map) {
+            final sortedKeys = monthData.keys.toList()
+              ..sort((a, b) => int.parse(a).compareTo(int.parse(b)));
+
+            for (var d in sortedKeys) {
+              final dInt = int.tryParse(d);
+              if (dInt == null) continue;
+
+              final ad = NepaliDateConverter.convertToAd(
+                y,
+                m,
+                dInt,
+                monthDaysData,
+              );
+
+              if (ad.isAfter(currentAd) && ad.isBefore(limit)) {
+                final val = monthData[d];
+                title = val is List ? val.join(", ") : val.toString();
+                date = "${_toNepaliNumber(dInt)} ${_nepaliMonths[m - 1]}";
+
+                final diff = ad.difference(currentAd).inDays;
+                remaining = diff == 1 ? "Tomorrow" : "In $diff days";
+
                 found = true;
                 break;
               }
@@ -316,11 +395,9 @@ class DateDetailsView extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(AppSpace.medium),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200, width: 1),
+        border: Border(top: BorderSide(color: Colors.grey.shade200, width: 1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,32 +405,35 @@ class DateDetailsView extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Text(
-                  upcomingTitle,
-                  style: AppTypography.boldBody.copyWith(
-                    color: AppColors.black,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-              if (daysRemainingText.isNotEmpty)
+              Text("Upcoming Holiday", style: AppTypography.caption),
+              if (remaining.isNotEmpty)
                 Text(
-                  daysRemainingText,
+                  remaining.toUpperCase(),
                   style: AppTypography.caption.copyWith(
                     color: AppColors.darkBlue,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 11,
                   ),
                 ),
             ],
           ),
-          if (upcomingDate.isNotEmpty) ...[
-            const SizedBox(height: 4),
+          const SizedBox(height: 6),
+          Text(
+            title,
+            style: AppTypography.boldBody.copyWith(
+              fontSize: 16,
+              color: AppColors.black,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          if (date.isNotEmpty) ...[
+            const SizedBox(height: 2),
             Text(
-              upcomingDate,
+              date,
               style: AppTypography.caption.copyWith(
-                  color: Colors.grey.shade500, fontSize: 13),
+                color: Colors.grey.shade600,
+                fontSize: 13,
+              ),
             ),
           ],
         ],
@@ -361,4 +441,3 @@ class DateDetailsView extends ConsumerWidget {
     );
   }
 }
-

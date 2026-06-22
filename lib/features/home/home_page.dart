@@ -8,7 +8,6 @@ import 'package:bhitte_patro/core/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends ConsumerWidget {
@@ -17,6 +16,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return const Scaffold(
+      backgroundColor: AppColors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -75,7 +75,7 @@ class GreetingHeader extends ConsumerWidget {
               ),
             ),
             Text(
-              userName,
+              '$userName👋',
               style: AppTypography.subtitle.copyWith(
                 fontSize: AppFontSize.large,
               ),
@@ -94,10 +94,21 @@ class GreetingHeader extends ConsumerWidget {
         // ),
         GestureDetector(
           onTap: () => context.push(RoutePage.globe),
-          child: SvgPicture.asset(
-            'assets/satellite-4-svgrepo-com.svg',
-            width: 30,
-            height: 30,
+          child: Container(
+            padding: const EdgeInsets.all(AppSpace.medium),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blueAccent.withOpacity(0.1),
+            ),
+            child: SvgPicture.asset(
+              'assets/satellite-4-svgrepo-com.svg',
+              width: 26,
+              height: 26,
+              colorFilter: const ColorFilter.mode(
+                AppColors.black,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
         ),
       ],
