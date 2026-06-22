@@ -13,6 +13,7 @@ Bhitte Patro is a modern, feature-rich Nepali calendar, scheduling, and news agg
       <tr>
         <th style="padding: 15px; border: 1px solid #ccc; background-color: #f4f4f4; font-weight: bold;">Screenshot 1</th>
         <th style="padding: 15px; border: 1px solid #ccc; background-color: #f4f4f4; font-weight: bold;">Screenshot 2</th>
+        <th style="padding: 15px; border: 1px solid #ccc; background-color: #f4f4f4; font-weight: bold;">Screenshot 3</th>
       </tr>
     </thead>
     <tbody>
@@ -22,6 +23,9 @@ Bhitte Patro is a modern, feature-rich Nepali calendar, scheduling, and news agg
         </td>
         <td style="padding: 15px; border: 1px solid #ccc; vertical-align: top;">
           <img width="400" height="900" alt="simulator_screenshot_9EF0CB89-20B5-480D-BFD5-58BE4F5F9948" src="https://github.com/user-attachments/assets/0e1732a1-3195-4620-a2eb-b084dc3906b2" style="max-width: 100%; height: auto;" />
+        </td>
+          <td style="padding: 15px; border: 1px solid #ccc; vertical-align: top;">
+          <img width="400" height="900" alt="simulator_screenshot_9EF0CB89-20B5-480D-BFD5-58BE4F5F9948" src="https://github.com/user-attachments/assets/a4f4e8e9-3cbc-4eff-bac9-295e262fe089" style="max-width: 100%; height: auto;" />
         </td>
       </tr>
     </tbody>
