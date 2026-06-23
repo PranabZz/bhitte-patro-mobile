@@ -22,6 +22,7 @@
 
         <!-- Widgets -->
         <receiver android:name="com.pranab.bhitte_patro.BhittePatroWidgetProvider"
+            android:label="Bhitte Patro (2x2)"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -31,6 +32,7 @@
         </receiver>
 
         <receiver android:name="com.pranab.bhitte_patro.BhittePatroWidgetProviderMedium"
+            android:label="Bhitte Patro (5x2)"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -39,14 +41,6 @@
                 android:resource="@xml/bhitte_patro_widget_info_medium" />
         </receiver>
 
-        <receiver android:name="com.pranab.bhitte_patro.BhittePatroWidgetProviderLarge"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/bhitte_patro_widget_info_large" />
-        </receiver>
 
         <activity
             android:name=".MainActivity"

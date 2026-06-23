@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/widget_background"
-    android:padding="12dp"
-    android:clipToOutline="true">
+    android:padding="16dp"
+>
 
     <!-- Top Section (Today Info) -->
     <LinearLayout
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="12dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:text="बैशाख २०८३"
                 android:textColor="#E53935"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="May 23, 2026 • Saturday"
                 android:textColor="#757575"
-                android:textSize="11sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="९"
                 android:textColor="#212121"
-                android:textSize="28sp"
+                android:textSize="36sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="शनिबार"
                 android:textColor="#E53935"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
@@ -69,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#E0E0E0"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="12dp" />
 
     <!-- Calendar Grid (Nested LinearLayouts) -->
     <LinearLayout
@@ -84,93 +84,99 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="6dp">
-            <TextView android:text="आ" android:gravity="center" android:textColor="#E53935" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
-            <TextView android:text="सो" android:gravity="center" android:textColor="#757575" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
-            <TextView android:text="मं" android:gravity="center" android:textColor="#757575" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
-            <TextView android:text="बु" android:gravity="center" android:textColor="#757575" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
-            <TextView android:text="बि" android:gravity="center" android:textColor="#757575" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
-            <TextView android:text="शु" android:gravity="center" android:textColor="#757575" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
-            <TextView android:text="श" android:gravity="center" android:textColor="#E53935" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
+            android:layout_marginBottom="8dp">
+            <TextView android:text="आ" android:gravity="center" android:textColor="#E53935" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <TextView android:text="सो" android:gravity="center" android:textColor="#757575" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <TextView android:text="मं" android:gravity="center" android:textColor="#757575" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <TextView android:text="बु" android:gravity="center" android:textColor="#757575" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <TextView android:text="बि" android:gravity="center" android:textColor="#757575" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <TextView android:text="शु" android:gravity="center" android:textColor="#757575" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+            <TextView android:text="श" android:gravity="center" android:textColor="#E53935" android:textSize="12sp" android:textStyle="bold" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
         </LinearLayout>
 
         <!-- Rows with 7 cells each -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:layout_marginBottom="4dp">
-            <TextView android:id="@+id/cell_0" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_1" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_2" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_3" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_4" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_5" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_6" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_0" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_1" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_2" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_3" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_4" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_5" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_6" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:layout_marginBottom="4dp">
-            <TextView android:id="@+id/cell_7" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_8" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_9" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_10" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_11" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_12" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_13" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_7" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_8" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_9" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_10" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_11" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_12" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_13" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:layout_marginBottom="4dp">
-            <TextView android:id="@+id/cell_14" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_15" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_16" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_17" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_18" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_19" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_20" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_14" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_15" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_16" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_17" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_18" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_19" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_20" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:layout_marginBottom="4dp">
-            <TextView android:id="@+id/cell_21" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_22" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_23" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_24" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_25" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_26" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_27" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_21" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_22" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_23" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_24" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_25" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_26" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_27" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:layout_marginBottom="4dp">
-            <TextView android:id="@+id/cell_28" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_29" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_30" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_31" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_32" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_33" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_34" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_28" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_29" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_30" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_31" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_32" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_33" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_34" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
-            <TextView android:id="@+id/cell_35" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_36" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_37" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_38" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_39" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_40" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
-            <TextView android:id="@+id/cell_41" android:gravity="center" android:textSize="11sp" android:layout_width="0dp" android:layout_height="24dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_35" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_36" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_37" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_38" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_39" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_40" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_41" android:gravity="center" android:textSize="12sp" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"/>
         </LinearLayout>
     </LinearLayout>
 

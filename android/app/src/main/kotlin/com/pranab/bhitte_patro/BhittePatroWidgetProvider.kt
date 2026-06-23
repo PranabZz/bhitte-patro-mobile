@@ -201,47 +201,52 @@ abstract class BaseBhittePatroWidgetProvider(private val layoutId: Int) : AppWid
                     views.setViewVisibility(R.id.text_holiday, View.GONE)
                 }
             }
-            R.layout.widget_layout_large -> {
-                views.setTextViewText(R.id.text_month_year, "$monthName $yearString")
-                views.setTextViewText(R.id.text_big_day, dayString)
-                views.setTextViewText(R.id.text_weekday, weekdayName)
-                views.setTextViewText(R.id.text_english_date, "$englishDateString • ${todayAd.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH)}")
-                
-                if (todayHoliday != null) {
-                    views.setTextViewText(R.id.text_holiday, todayHoliday)
-                    views.setViewVisibility(R.id.layout_holiday, View.VISIBLE)
-                } else {
-                    views.setViewVisibility(R.id.layout_holiday, View.GONE)
-                }
-            }
         }
 
 
         // Render Calendar Grid if exists in layout
-        if (layoutId == R.layout.widget_layout_medium || layoutId == R.layout.widget_layout_large) {
+        if (layoutId == R.layout.widget_layout_medium) {
+            // Use a static array to avoid getIdentifier() fragility and ID collisions
+            // between the medium and large layouts which both define cell_0..cell_41.
+            val cellIds = intArrayOf(
+                R.id.cell_0,  R.id.cell_1,  R.id.cell_2,  R.id.cell_3,  R.id.cell_4,
+                R.id.cell_5,  R.id.cell_6,  R.id.cell_7,  R.id.cell_8,  R.id.cell_9,
+                R.id.cell_10, R.id.cell_11, R.id.cell_12, R.id.cell_13, R.id.cell_14,
+                R.id.cell_15, R.id.cell_16, R.id.cell_17, R.id.cell_18, R.id.cell_19,
+                R.id.cell_20, R.id.cell_21, R.id.cell_22, R.id.cell_23, R.id.cell_24,
+                R.id.cell_25, R.id.cell_26, R.id.cell_27, R.id.cell_28, R.id.cell_29,
+                R.id.cell_30, R.id.cell_31, R.id.cell_32, R.id.cell_33, R.id.cell_34,
+                R.id.cell_35, R.id.cell_36, R.id.cell_37, R.id.cell_38, R.id.cell_39,
+                R.id.cell_40, R.id.cell_41
+            )
+
+            val todayHighlightColor = Color.parseColor("#E53935")
+            val holidayColor        = Color.parseColor("#E53935")
+            val normalColor         = Color.parseColor("#212121")
+
             for (cell in 0..41) {
-                val resId = context.resources.getIdentifier("cell_$cell", "id", context.packageName)
-                if (resId != 0) {
-                    val dayNumber = cell - firstDayWeekday + 1
-                    if (dayNumber in 1..daysInMonth) {
-                        views.setTextViewText(resId, toNepaliNumber(dayNumber))
+                val resId = cellIds[cell]
+                val dayNumber = cell - firstDayWeekday + 1
+                if (dayNumber in 1..daysInMonth) {
+                    val isToday        = dayNumber == finalBsDay
+                    val isSaturday     = (cell % 7 == 6)
+                    val isCustomHoliday = checkIsHoliday(finalBsYear, finalBsMonth, dayNumber, holidaysJson)
+                    val isHoliday      = isSaturday || isCustomHoliday
 
-                        val isToday = dayNumber == finalBsDay
-                        val isSaturday = (cell % 7 == 6)
-                        val isCustomHoliday = checkIsHoliday(finalBsYear, finalBsMonth, dayNumber, holidaysJson)
-                        val isHoliday = isSaturday || isCustomHoliday
+                    views.setTextViewText(resId, toNepaliNumber(dayNumber))
 
-                        if (isToday) {
-                            views.setTextColor(resId, Color.WHITE)
-                            views.setInt(resId, "setBackgroundResource", R.drawable.widget_today_bg)
-                        } else {
-                            views.setTextColor(resId, if (isHoliday) Color.RED else Color.BLACK)
-                            views.setInt(resId, "setBackgroundResource", 0)
-                        }
+                    if (isToday) {
+                        // setBackgroundColor IS in the RemoteViews allowlist — safe to call via setInt.
+                        // setBackgroundResource is NOT allowlisted on API 31+ and crashes the widget.
+                        views.setTextColor(resId, Color.WHITE)
+                        views.setInt(resId, "setBackgroundColor", todayHighlightColor)
                     } else {
-                        views.setTextViewText(resId, "")
-                        views.setInt(resId, "setBackgroundResource", 0)
+                        views.setTextColor(resId, if (isHoliday) holidayColor else normalColor)
+                        views.setInt(resId, "setBackgroundColor", Color.TRANSPARENT)
                     }
+                } else {
+                    views.setTextViewText(resId, "")
+                    views.setInt(resId, "setBackgroundColor", Color.TRANSPARENT)
                 }
             }
         }
@@ -302,4 +307,3 @@ abstract class BaseBhittePatroWidgetProvider(private val layoutId: Int) : AppWid
 
 class BhittePatroWidgetProvider : BaseBhittePatroWidgetProvider(R.layout.widget_layout_small)
 class BhittePatroWidgetProviderMedium : BaseBhittePatroWidgetProvider(R.layout.widget_layout_medium)
-class BhittePatroWidgetProviderLarge : BaseBhittePatroWidgetProvider(R.layout.widget_layout_large)

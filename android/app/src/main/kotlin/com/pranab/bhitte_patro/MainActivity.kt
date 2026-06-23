@@ -66,7 +66,6 @@ class MainActivity: FlutterActivity() {
     private fun triggerWidgetUpdate() {
         updateForProvider(BhittePatroWidgetProvider::class.java)
         updateForProvider(BhittePatroWidgetProviderMedium::class.java)
-        updateForProvider(BhittePatroWidgetProviderLarge::class.java)
     }
 
     private fun <T> updateForProvider(providerClass: Class<T>) {
