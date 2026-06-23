@@ -1,4 +1,4 @@
-![simulator_screenshot_36B6D534-BC2E-4C57-A91D-3A3EBAAF5C92](https://github.com/user-attachments/assets/7e317299-00c7-4965-8826-4307d780c95e)# Bhitte Patro
+# Bhitte Patro
 
 <p align="center">
   <img width="100" height="100" alt="logo" src="https://github.com/user-attachments/assets/f0970223-6f0b-4709-bdc9-ad6856b323f2" />
