@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@drawable/widget_background"
+    android:padding="8dp"
+    android:gravity="center_vertical"
+    android:clipToOutline="true">
+
+    <!-- Left Column (Today Card) -->
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/text_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="बैशाख"
+            android:textColor="#E53935"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="२०८३"
+            android:textColor="#757575"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/text_big_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            android:text="९"
+            android:textColor="#212121"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_weekday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="शनिबार"
+            android:textColor="#757575"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_english_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="May 23, 2026"
+            android:textColor="#9E9E9E"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/text_holiday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="नयाँ वर्ष"
+            android:textColor="#E53935"
+            android:textSize="8sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#E0E0E0"
+        android:layout_marginHorizontal="4dp" />
+
+    <!-- Right Column (Calendar Grid as nested LinearLayouts) -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_marginStart="4dp">
+
+        <!-- Weekday Headers -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp">
+            <TextView android:text="आ" android:gravity="center" android:textColor="#E53935" android:textSize="9sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
+            <TextView android:text="सो" android:gravity="center" android:textColor="#757575" android:textSize="9sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
+            <TextView android:text="मं" android:gravity="center" android:textColor="#757575" android:textSize="9sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
+            <TextView android:text="बु" android:gravity="center" android:textColor="#757575" android:textSize="9sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
+            <TextView android:text="बि" android:gravity="center" android:textColor="#757575" android:textSize="9sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
+            <TextView android:text="शु" android:gravity="center" android:textColor="#757575" android:textSize="9sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
+            <TextView android:text="श" android:gravity="center" android:textColor="#E53935" android:textSize="9sp" android:textStyle="bold" android:layout_width="0dp" android:layout_weight="1"/>
+        </LinearLayout>
+
+        <!-- Rows with 7 cells each -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="2dp">
+            <TextView android:id="@+id/cell_0" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_1" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_2" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_3" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_4" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_5" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_6" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="2dp">
+            <TextView android:id="@+id/cell_7" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_8" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_9" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_10" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_11" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_12" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_13" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="2dp">
+            <TextView android:id="@+id/cell_14" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_15" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_16" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_17" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_18" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_19" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_20" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="2dp">
+            <TextView android:id="@+id/cell_21" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_22" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_23" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_24" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_25" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_26" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_27" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="2dp">
+            <TextView android:id="@+id/cell_28" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_29" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_30" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_31" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_32" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_33" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_34" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView android:id="@+id/cell_35" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_36" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_37" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_38" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_39" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_40" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/cell_41" android:gravity="center" android:textSize="9sp" android:layout_width="0dp" android:layout_height="20dp" android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

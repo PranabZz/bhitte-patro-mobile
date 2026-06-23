@@ -1,4 +1,5 @@
 import 'package:bhitte_patro/core/repositories/calendar_repository.dart';
+import 'package:bhitte_patro/core/services/widget_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,11 +19,18 @@ final calendarProvider = FutureProvider<Map<String, dynamic>>((ref) async {
     final Map<String, dynamic> data = jsonDecode(jsonString);
     debugPrint("CalendarProvider: Decoded map keys: ${data.keys}");
     
+    // Update Widget
+    await WidgetService.updateWidgetData(data);
+    
     return data;
   } catch (e) {
     debugPrint("CalendarProvider: Error loading/parsing asset: $e");
     // Fallback to local cache
     final repo = ref.read(calendarRepositoryProvider);
-    return repo.getCalendarData() ?? {};
+    final data = repo.getCalendarData() ?? {};
+    if (data.isNotEmpty) {
+      await WidgetService.updateWidgetData(data);
+    }
+    return data;
   }
 });

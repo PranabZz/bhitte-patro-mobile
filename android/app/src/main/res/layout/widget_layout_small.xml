@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_background"
+    android:clipToOutline="true">
+
+    <!-- Header bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#E53935"
+        android:padding="8dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/text_month_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="बैशाख २०८३"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/text_big_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="९"
+            android:textColor="#212121"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_weekday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="शनिबार"
+            android:textColor="#757575"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_english_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="May 23, 2026"
+            android:textColor="#9E9E9E"
+            android:textSize="9sp" />
+    </LinearLayout>
+</LinearLayout>

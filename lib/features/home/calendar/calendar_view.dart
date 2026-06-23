@@ -1,14 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bhitte_patro/core/consts/app_colors.dart';
 import 'package:bhitte_patro/core/consts/app_space.dart';
 import 'package:bhitte_patro/core/consts/app_typography.dart';
 import 'package:bhitte_patro/core/providers/calendar_provider.dart';
 import 'package:bhitte_patro/core/providers/selected_date_provider.dart';
+import 'package:bhitte_patro/core/services/widget_service.dart';
 import 'package:bhitte_patro/core/utils/nepali_date_converter.dart';
 import 'package:bhitte_patro/features/home/calendar/date_details_view.dart';
 import 'package:bhitte_patro/shared/widgets/pill_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CalendarView extends ConsumerStatefulWidget {
@@ -45,7 +48,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
     'पुस',
     'माघ',
     'फागुन',
-    'चैत'
+    'चैत',
   ];
 
   final List<String> _weekDays = [
@@ -55,7 +58,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
     'बुध',
     'बिही',
     'शुक्र',
-    'शनि'
+    'शनि',
   ];
 
   String _toNepaliNumber(int number) {
@@ -65,11 +68,11 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
 
   void _scrollToMonth(int index) {
     if (_pillScrollController.hasClients) {
-      // Calculate approximate position. 
+      // Calculate approximate position.
       // Each item width is MediaQuery.of(context).size.width / 4.5.
       // We want to bring the tapped index to the start of the view.
       final itemWidth = MediaQuery.of(context).size.width / 4.5;
-      final separatorWidth = AppSpace.extraSmall; 
+      final separatorWidth = AppSpace.extraSmall;
       final targetOffset = index * (itemWidth + separatorWidth);
 
       // Ensure we don't scroll past the max extent
@@ -94,7 +97,8 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
   }
 
   void _revertToToday(Map<String, dynamic> calendarData) {
-    final monthDaysData = calendarData['monthDaysData'] as Map<String, dynamic>?;
+    final monthDaysData =
+        calendarData['monthDaysData'] as Map<String, dynamic>?;
     if (monthDaysData == null) return;
 
     final todayAd = DateTime.now();
@@ -121,20 +125,24 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
   void _initializeToday(Map<String, dynamic> calendarData) {
     if (_isInitialized) return;
 
-    final monthDaysData = calendarData['monthDaysData'] as Map<String, dynamic>?;
+    final monthDaysData =
+        calendarData['monthDaysData'] as Map<String, dynamic>?;
     if (monthDaysData == null) return;
 
     final todayAd = DateTime.now();
     final todayBs = NepaliDateConverter.convertToBs(todayAd, monthDaysData);
 
+    // Fire natively outside layout synchronization
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetService.updateWidgetData(calendarData);
+    });
+
     setState(() {
       _viewedYear = todayBs['year']!;
       _viewedMonthIndex = todayBs['month']! - 1;
-
       _selectedYear = todayBs['year']!;
       _selectedMonth = todayBs['month']!;
       _selectedDay = todayBs['day']!;
-
       _isInitialized = true;
     });
   }
@@ -152,7 +160,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
       'Sep',
       'Oct',
       'Nov',
-      'Dec'
+      'Dec',
     ];
     return months[month - 1];
   }
@@ -181,8 +189,11 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
 
         int daysSinceRef = 0;
         for (int y = 2060; y < _viewedYear; y++) {
-          daysSinceRef += (monthDaysData[y.toString()] as List<dynamic>)
-              .reduce((a, b) => a + b) as int;
+          daysSinceRef +=
+              (monthDaysData[y.toString()] as List<dynamic>).reduce(
+                    (a, b) => a + b,
+                  )
+                  as int;
         }
         for (int m = 0; m < _viewedMonthIndex; m++) {
           daysSinceRef += months[m] as int;
@@ -190,8 +201,8 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
 
         final firstDayWeekday = (DateTime.monday + daysSinceRef) % 7;
 
-        final years =
-            monthDaysData.keys.map((e) => int.parse(e)).toList()..sort();
+        final years = monthDaysData.keys.map((e) => int.parse(e)).toList()
+          ..sort();
         final minYear = years.first;
         final maxYear = years.last;
 
@@ -207,8 +218,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                 child: Container(
                   padding: const EdgeInsets.all(AppSpace.medium),
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Column(
                     children: [
                       Row(
@@ -217,12 +229,15 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(_toNepaliNumber(_viewedYear),
-                                  style: AppTypography.boldTitle),
+                              Text(
+                                _toNepaliNumber(_viewedYear),
+                                style: AppTypography.boldTitle,
+                              ),
                               const SizedBox(height: AppSpace.extraSmall),
                               Text(
-                                  "${NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, 1, monthDaysData).month == NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, daysInMonth, monthDaysData).month ? '' : '${_monthNameEn(NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, 1, monthDaysData).month)}/'}${_monthNameEn(NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, daysInMonth, monthDaysData).month)} ${NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, daysInMonth, monthDaysData).year}",
-                                  style: AppTypography.caption),
+                                "${NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, 1, monthDaysData).month == NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, daysInMonth, monthDaysData).month ? '' : '${_monthNameEn(NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, 1, monthDaysData).month)}/'}${_monthNameEn(NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, daysInMonth, monthDaysData).month)} ${NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, daysInMonth, monthDaysData).year}",
+                                style: AppTypography.caption,
+                              ),
                             ],
                           ),
                           Row(
@@ -230,23 +245,23 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                               IconButton(
                                 onPressed: _viewedYear > minYear
                                     ? () => setState(() {
-                                          _viewedYear--;
-                                          _startRevertTimer(calendarData);
-                                        })
+                                        _viewedYear--;
+                                        _startRevertTimer(calendarData);
+                                      })
                                     : null,
                                 icon: const Icon(Icons.chevron_left),
                               ),
                               IconButton(
                                 onPressed: _viewedYear < maxYear
                                     ? () => setState(() {
-                                          _viewedYear++;
-                                          _startRevertTimer(calendarData);
-                                        })
+                                        _viewedYear++;
+                                        _startRevertTimer(calendarData);
+                                      })
                                     : null,
                                 icon: const Icon(Icons.chevron_right),
                               ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: AppSpace.large),
@@ -277,12 +292,19 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                       const SizedBox(height: AppSpace.large),
                       Row(
                         children: _weekDays
-                            .map((day) => Expanded(
+                            .map(
+                              (day) => Expanded(
                                 child: Center(
-                                    child: Text(day,
-                                        style: AppTypography.body.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14)))))
+                                  child: Text(
+                                    day,
+                                    style: AppTypography.body.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
                             .toList(),
                       ),
                       const SizedBox(height: AppSpace.medium),
@@ -292,28 +314,33 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                         itemCount: daysInMonth + firstDayWeekday,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 7,
-                                mainAxisSpacing: 4,
-                                crossAxisSpacing: 4),
+                              crossAxisCount: 7,
+                              mainAxisSpacing: 4,
+                              crossAxisSpacing: 4,
+                            ),
                         itemBuilder: (context, index) {
                           if (index < firstDayWeekday) return const SizedBox();
                           final day = index - firstDayWeekday + 1;
                           final adDate = NepaliDateConverter.convertToAd(
-                              _viewedYear,
-                              _viewedMonthIndex + 1,
-                              day,
-                              monthDaysData);
+                            _viewedYear,
+                            _viewedMonthIndex + 1,
+                            day,
+                            monthDaysData,
+                          );
 
                           final now = DateTime.now();
-                          final todayBs =
-                              NepaliDateConverter.convertToBs(now, monthDaysData);
-                          final isTodayReal = (day == todayBs['day'] &&
+                          final todayBs = NepaliDateConverter.convertToBs(
+                            now,
+                            monthDaysData,
+                          );
+                          final isTodayReal =
+                              (day == todayBs['day'] &&
                               _viewedMonthIndex == todayBs['month']! - 1 &&
                               _viewedYear == todayBs['year']);
 
                           final isWeekend = (index % 7 == 0 || index % 7 == 6);
-                          final holidayList = holidays?['$_viewedYear']
-                              ?['${_viewedMonthIndex + 1}']?['$day'];
+                          final holidayList =
+                              holidays?['$_viewedYear']?['${_viewedMonthIndex + 1}']?['$day'];
                           final isHoliday = (holidayList != null) || isWeekend;
 
                           return GestureDetector(
@@ -326,19 +353,24 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                               });
                               ref
                                   .read(selectedDateProvider.notifier)
-                                  .setSelectedDate(SelectedDate(
+                                  .setSelectedDate(
+                                    SelectedDate(
                                       day: _selectedDay!,
                                       month: _selectedMonth!,
-                                      year: _selectedYear!));
+                                      year: _selectedYear!,
+                                    ),
+                                  );
                             },
                             child: () {
-                              final isSelected = (day == _selectedDay &&
+                              final isSelected =
+                                  (day == _selectedDay &&
                                   _selectedMonth == _viewedMonthIndex + 1 &&
                                   _selectedYear == _viewedYear);
 
                               Color bgColor = Colors.transparent;
-                              Color textColor =
-                                  isHoliday ? AppColors.red : AppColors.black;
+                              Color textColor = isHoliday
+                                  ? AppColors.red
+                                  : AppColors.black;
 
                               Border? border;
 
@@ -347,8 +379,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                                 textColor = Colors.white;
                               } else if (isSelected) {
                                 bgColor = Colors.transparent;
-                                textColor =
-                                    isHoliday ? AppColors.red : AppColors.darkBlue;
+                                textColor = isHoliday
+                                    ? AppColors.red
+                                    : AppColors.darkBlue;
                                 border = Border.all(color: textColor, width: 2);
                               }
 
@@ -361,19 +394,26 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                                 child: Stack(
                                   children: [
                                     Center(
-                                      child: Text(_toNepaliNumber(day),
-                                          style: AppTypography.boldBody.copyWith(
-                                              color: textColor, fontSize: 16)),
+                                      child: Text(
+                                        _toNepaliNumber(day),
+                                        style: AppTypography.boldBody.copyWith(
+                                          color: textColor,
+                                          fontSize: 16,
+                                        ),
+                                      ),
                                     ),
                                     Positioned(
                                       bottom: 4,
                                       right: 4,
-                                      child: Text("${adDate.day}",
-                                          style: AppTypography.caption.copyWith(
-                                              fontSize: 10,
-                                              color: (isTodayReal || isSelected)
-                                                  ? textColor.withOpacity(0.7)
-                                                  : Colors.grey)),
+                                      child: Text(
+                                        "${adDate.day}",
+                                        style: AppTypography.caption.copyWith(
+                                          fontSize: 10,
+                                          color: (isTodayReal || isSelected)
+                                              ? textColor.withOpacity(0.7)
+                                              : Colors.grey,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -391,10 +431,11 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                   _selectedMonth != null &&
                   _selectedYear != null)
                 DateDetailsView(
-                    day: _selectedDay!,
-                    month: _selectedMonth!,
-                    year: _selectedYear!,
-                    calendarData: calendarData),
+                  day: _selectedDay!,
+                  month: _selectedMonth!,
+                  year: _selectedYear!,
+                  calendarData: calendarData,
+                ),
             ],
           ),
         );
