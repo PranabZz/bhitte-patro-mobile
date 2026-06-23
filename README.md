@@ -1,4 +1,4 @@
-# Bhitte Patro
+![simulator_screenshot_36B6D534-BC2E-4C57-A91D-3A3EBAAF5C92](https://github.com/user-attachments/assets/7e317299-00c7-4965-8826-4307d780c95e)# Bhitte Patro
 
 <p align="center">
   <img width="100" height="100" alt="logo" src="https://github.com/user-attachments/assets/f0970223-6f0b-4709-bdc9-ad6856b323f2" />
@@ -31,7 +31,33 @@ Bhitte Patro is a modern, feature-rich Nepali calendar, scheduling, and news agg
     </tbody>
   </table>
 </div>
----
+
+<div style="width: 100%; overflow-x: auto; margin: 20px 0; font-family: sans-serif;">
+  <table style="width: 100%; border-collapse: collapse; text-align: center;">
+    <thead>
+      <tr>
+        <th style="padding: 15px; border: 1px solid #ccc; background-color: #f4f4f4; font-weight: bold;">Home Widget Small</th>
+        <th style="padding: 15px; border: 1px solid #ccc; background-color: #f4f4f4; font-weight: bold;">Home Widget Medium</th>
+        <th style="padding: 15px; border: 1px solid #ccc; background-color: #f4f4f4; font-weight: bold;">Home Widget Large</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 15px; border: 1px solid #ccc; vertical-align: top;">
+          <img width="400" height="900" alt="simulator_screenshot_328A473F-2466-4690-8C58-AC1AC403F3F6" src="https://github.com/user-attachments/assets/a944315c-cce9-47b5-bdb7-2bf49aeaa741" style="max-width: 100%; height: auto;" />
+        </td>
+        <td style="padding: 15px; border: 1px solid #ccc; vertical-align: top;">
+          <img width="400" height="900" alt="simulator_screenshot_9EF0CB89-20B5-480D-BFD5-58BE4F5F9948" src="https://github.com/user-attachments/assets/b941f9a2-00bc-4e71-b436-086e56c053ea" style="max-width: 100%; height: auto;" />
+        </td>
+    <td style="padding: 15px; border: 1px solid #ccc; vertical-align: top;">
+          <img width="400" height="900" alt="simulator_screenshot_9EF0CB89-20B5-480D-BFD5-58BE4F5F9948" src="https://github.com/user-attachments/assets/4d5d05ed-1de0-40dd-b73f-995c89253ede" style="max-width: 100%; height: auto;" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
 
 ## Key Features
 
