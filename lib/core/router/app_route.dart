@@ -1,6 +1,7 @@
 import 'package:bhitte_patro/core/router/auth_refresh_listenable.dart';
 import 'package:bhitte_patro/core/router/route_page.dart';
 import 'package:bhitte_patro/features/auth/login_page.dart';
+import 'package:bhitte_patro/features/gold_silver/gold_silver_page.dart';
 import 'package:bhitte_patro/features/home/home_page.dart';
 import 'package:bhitte_patro/features/news/news_detail_page.dart';
 import 'package:bhitte_patro/features/news/news_page.dart';
@@ -20,9 +21,12 @@ class AppRoute {
     redirect: (context, state) {
       final user = FirebaseAuth.instance.currentUser;
       final loggingIn = state.matchedLocation == RoutePage.login;
-      final accessingProtected = state.matchedLocation == RoutePage.schedule || state.matchedLocation == RoutePage.profile;
+      final accessingProtected =
+          state.matchedLocation == RoutePage.schedule ||
+          state.matchedLocation == RoutePage.profile;
 
-      if (user == null && accessingProtected && !loggingIn) return RoutePage.login;
+      if (user == null && accessingProtected && !loggingIn)
+        return RoutePage.login;
       if (user != null && loggingIn) return RoutePage.home;
       return null;
     },
@@ -50,10 +54,8 @@ class AppRoute {
         routes: [
           GoRoute(
             path: RoutePage.home,
-            pageBuilder: (context, state) => NoTransitionPage(
-              key: state.pageKey,
-              child: const HomePage(),
-            ),
+            pageBuilder: (context, state) =>
+                NoTransitionPage(key: state.pageKey, child: const HomePage()),
           ),
           GoRoute(
             path: RoutePage.schedule,
@@ -64,10 +66,8 @@ class AppRoute {
           ),
           GoRoute(
             path: RoutePage.news,
-            pageBuilder: (context, state) => NoTransitionPage(
-              key: state.pageKey,
-              child: const NewsPage(),
-            ),
+            pageBuilder: (context, state) =>
+                NoTransitionPage(key: state.pageKey, child: const NewsPage()),
           ),
           GoRoute(
             path: RoutePage.profile,
@@ -87,6 +87,10 @@ class AppRoute {
             title: extras['title'] as String,
           );
         },
+      ),
+      GoRoute(
+        path: RoutePage.goldSilver,
+        builder: (context, state) => const GoldSilverWidget(),
       ),
       GoRoute(
         path: RoutePage.dateConversion,

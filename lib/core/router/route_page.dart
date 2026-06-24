@@ -8,4 +8,5 @@ class RoutePage {
   static const String globe = '/globe';
   static const String dateConversion = '/profile/date-conversion';
   static const String about = '/profile/about';
+  static const String goldSilver = '/profile/gold-silver';
 }

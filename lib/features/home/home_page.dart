@@ -3,6 +3,7 @@ import 'package:bhitte_patro/core/consts/app_font_size.dart';
 import 'package:bhitte_patro/core/consts/app_space.dart';
 import 'package:bhitte_patro/core/consts/app_typography.dart';
 import 'package:bhitte_patro/core/router/route_page.dart';
+import 'package:bhitte_patro/features/gold_silver/gold_silver_page.dart';
 import 'package:bhitte_patro/features/home/calendar/calendar_view.dart';
 import 'package:bhitte_patro/core/providers/auth_provider.dart';
 import 'package:flutter/material.dart';

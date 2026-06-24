@@ -19,7 +19,10 @@ class ProfilePage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Profile', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Profile',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -44,39 +47,59 @@ class ProfilePage extends ConsumerWidget {
                             height: 100,
                             fit: BoxFit.cover,
                           )
-                        : const Icon(Icons.person, size: 50, color: AppColors.darkBlue),
+                        : const Icon(
+                            Icons.person,
+                            size: 50,
+                            color: AppColors.darkBlue,
+                          ),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
               Center(
-                child: Text(user.displayName ?? 'No Name',
-                    style: AppTypography.boldTitle.copyWith(fontSize: 20)),
+                child: Text(
+                  user.displayName ?? 'No Name',
+                  style: AppTypography.boldTitle.copyWith(fontSize: 20),
+                ),
               ),
               Center(
-                child: Text(user.email ?? 'No Email',
-                    style: AppTypography.body.copyWith(color: Colors.grey)),
+                child: Text(
+                  user.email ?? 'No Email',
+                  style: AppTypography.body.copyWith(color: Colors.grey),
+                ),
               ),
               const SizedBox(height: 32),
               const Divider(),
-              
+
               // Notification Settings Toggle Switch
               SwitchListTile(
                 value: notificationsEnabled,
                 onChanged: (val) {
                   ref.read(notificationsEnabledProvider.notifier).toggle(val);
                 },
-                title: const Text("Notification Settings", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                secondary: const Icon(Icons.notifications_outlined, color: AppColors.darkBlue),
+                title: const Text(
+                  "Notification Settings",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                secondary: const Icon(
+                  Icons.notifications_outlined,
+                  color: AppColors.darkBlue,
+                ),
                 activeColor: AppColors.darkBlue,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8),
               ),
-              
+
               // Date Conversion Tile (Navigates to new DateConversionPage)
               _buildListTile(
                 Icons.calendar_today_outlined,
                 "Date Conversion",
                 onTap: () => context.push(RoutePage.dateConversion),
+              ),
+
+              _buildListTile(
+                Icons.add_chart,
+                "Gold & Silver",
+                onTap: () => context.push(RoutePage.goldSilver),
               ),
 
               // Language Tile
@@ -87,7 +110,9 @@ class ProfilePage extends ConsumerWidget {
                   showModalBottomSheet(
                     context: context,
                     shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
                     ),
                     builder: (context) {
                       return Container(
@@ -104,17 +129,27 @@ class ProfilePage extends ConsumerWidget {
                               ),
                             ),
                             const SizedBox(height: 24),
-                            const Icon(Icons.translate, size: 48, color: AppColors.darkBlue),
+                            const Icon(
+                              Icons.translate,
+                              size: 48,
+                              color: AppColors.darkBlue,
+                            ),
                             const SizedBox(height: 16),
                             const Text(
                               "Language",
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             const SizedBox(height: 12),
                             Text(
                               "Support for multiple languages (Nepali/English) will be available in a future update.",
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.grey[600], height: 1.4),
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                height: 1.4,
+                              ),
                             ),
                             const SizedBox(height: 24),
                             SizedBox(
@@ -123,13 +158,18 @@ class ProfilePage extends ConsumerWidget {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.darkBlue,
                                   foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(vertical: 14),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 14,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                 ),
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text("Got it", style: TextStyle(fontWeight: FontWeight.bold)),
+                                child: const Text(
+                                  "Got it",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           ],
@@ -147,7 +187,7 @@ class ProfilePage extends ConsumerWidget {
                 subtitle: "Version 1.1.0",
                 onTap: () => context.push(RoutePage.about),
               ),
-              
+
               const Divider(),
               const SizedBox(height: 40),
               Padding(
@@ -157,12 +197,17 @@ class ProfilePage extends ConsumerWidget {
                     foregroundColor: Colors.red,
                     side: BorderSide(color: Colors.red.shade200),
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   onPressed: () async {
                     await ref.read(authServiceProvider).signOut();
                   },
-                  child: const Text('Logout', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text(
+                    'Logout',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -175,12 +220,22 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildListTile(IconData icon, String title, {String? subtitle, VoidCallback? onTap}) {
+  Widget _buildListTile(
+    IconData icon,
+    String title, {
+    String? subtitle,
+    VoidCallback? onTap,
+  }) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 8),
       leading: Icon(icon, color: AppColors.darkBlue),
-      title: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-      subtitle: subtitle != null ? Text(subtitle, style: const TextStyle(color: Colors.grey)) : null,
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      ),
+      subtitle: subtitle != null
+          ? Text(subtitle, style: const TextStyle(color: Colors.grey))
+          : null,
       trailing: const Icon(Icons.chevron_right, size: 20, color: Colors.grey),
       onTap: onTap,
     );
