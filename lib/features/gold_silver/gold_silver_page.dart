@@ -102,6 +102,7 @@ class _GoldSilverBodyState extends State<_GoldSilverBody> {
                     style: AppTypography.title.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 actions: [

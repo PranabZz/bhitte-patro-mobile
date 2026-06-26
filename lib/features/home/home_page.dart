@@ -16,24 +16,13 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Scaffold(
+    return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(AppSpace.medium),
-                child: GreetingHeader(),
-              ),
-              Padding(
-                padding: EdgeInsets.all(AppSpace.small),
-                child: CalendarView(),
-              ),
-            ],
-          ),
-        ),
-      ),
+
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
+
+      body: SingleChildScrollView(child: Column(children: [CalendarView()])),
     );
   }
 }

@@ -122,134 +122,131 @@ class DateDetailsView extends ConsumerWidget {
 
     final holidayList = calendarData['holidays']?['$year']?['$month']?['$day'];
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpace.small,
-        vertical: AppSpace.large,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Minimalist Header Text
-          Text(dateTitle, style: AppTypography.boldSubtitle),
-          const SizedBox(height: 12),
-
-          // Editorial Clean Card Layout
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.darkBlue,
-              borderRadius: BorderRadius.circular(4), // Flat, sharp design feel
-            ),
-            child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Left Side Frame
-                  SizedBox(
-                    width: 160,
-                    child: Image.asset(
-                      'assets/month/$month.jpg',
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          Container(color: Colors.white.withOpacity(0.05)),
-                    ),
-                  ),
-
-                  // Right Side Information Panel
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _toNepaliNumber(day),
-                                style: AppTypography.boldTitle.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 46,
-                                  fontWeight:
-                                      FontWeight.w300, // Clean typography
-                                  height: 1.0,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                "${_nepaliMonths[month - 1]} ${_toNepaliNumber(year)}",
-                                style: AppTypography.caption.copyWith(
-                                  color: Colors.white.withOpacity(0.7),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 24),
-
-                          // Text-driven data rows (No icon pill shapes)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildTextRow(
-                                label: "English Date",
-                                value:
-                                    "${_enMonths[adDate.month - 1]} ${adDate.day}, ${adDate.year}",
-                              ),
-                              if (tithiText.isNotEmpty) ...[
-                                const SizedBox(height: 6),
-                                _buildTextRow(label: "Tithi", value: tithiText),
-                              ],
-                              if (holidayList != null) ...[
-                                const SizedBox(height: 6),
-                                _buildTextRow(
-                                  label: "Holiday",
-                                  value: holidayList is List
-                                      ? holidayList.join(", ")
-                                      : holidayList.toString(),
-                                  isImportant: true,
-                                ),
-                              ],
-                              if (isToday) ...[
-                                const SizedBox(height: 6),
-                                weatherAsync.when(
-                                  data: (w) => _buildTextRow(
-                                    label: "Weather",
-                                    value: "${w.temperature}°C",
-                                  ),
-                                  loading: () => _buildTextRow(
-                                    label: "Weather",
-                                    value: "Loading...",
-                                  ),
-                                  error: (_, __) => const SizedBox.shrink(),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Editorial Clean Card Layout
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: AppColors.darkBlue,
+            borderRadius: BorderRadius.circular(4), // Flat, sharp design feel
+          ),
+          child: SizedBox(
+            height: 240,
+            child: Image.asset(
+              'assets/month/$month.jpg',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+                  Container(color: Colors.white.withOpacity(0.05)),
             ),
           ),
+          // child: IntrinsicHeight(
+          //   child: Row(
+          //     crossAxisAlignment: CrossAxisAlignment.stretch,
+          //     children: [
+          //       // Left Side Frame
+          //       SizedBox(
+          //         width: 160,
+          //         child: Image.asset(
+          //           'assets/month/$month.jpg',
+          //           fit: BoxFit.cover,
+          //           errorBuilder: (context, error, stackTrace) =>
+          //               Container(color: Colors.white.withOpacity(0.05)),
+          //         ),
+          //       ),
 
-          // Secondary Details block if it is today
-          if (isToday) ...[
-            const SizedBox(height: 12),
-            _buildSunMetricsTimeline(sunAsync),
-          ],
+          //       // Right Side Information Panel
+          //       Expanded(
+          //         child: Padding(
+          //           padding: const EdgeInsets.all(20.0),
+          //           child: Column(
+          //             crossAxisAlignment: CrossAxisAlignment.start,
+          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //             children: [
+          //               Column(
+          //                 crossAxisAlignment: CrossAxisAlignment.start,
+          //                 children: [
+          //                   Text(
+          //                     _toNepaliNumber(day),
+          //                     style: AppTypography.boldTitle.copyWith(
+          //                       color: Colors.white,
+          //                       fontSize: 46,
+          //                       fontWeight:
+          //                           FontWeight.w300, // Clean typography
+          //                       height: 1.0,
+          //                     ),
+          //                   ),
+          //                   const SizedBox(height: 2),
+          //                   Text(
+          //                     "${_nepaliMonths[month - 1]} ${_toNepaliNumber(year)}",
+          //                     style: AppTypography.caption.copyWith(
+          //                       color: Colors.white.withOpacity(0.7),
+          //                       fontSize: 16,
+          //                       fontWeight: FontWeight.w400,
+          //                     ),
+          //                   ),
+          //                 ],
+          //               ),
+          //               const SizedBox(height: 24),
 
-          const SizedBox(height: AppSpace.large),
+          //               // Text-driven data rows (No icon pill shapes)
+          //               Column(
+          //                 crossAxisAlignment: CrossAxisAlignment.start,
+          //                 children: [
+          //                   _buildTextRow(
+          //                     label: "English Date",
+          //                     value:
+          //                         "${_enMonths[adDate.month - 1]} ${adDate.day}, ${adDate.year}",
+          //                   ),
+          //                   if (tithiText.isNotEmpty) ...[
+          //                     const SizedBox(height: 6),
+          //                     _buildTextRow(label: "Tithi", value: tithiText),
+          //                   ],
+          //                   if (holidayList != null) ...[
+          //                     const SizedBox(height: 6),
+          //                     _buildTextRow(
+          //                       label: "Holiday",
+          //                       value: holidayList is List
+          //                           ? holidayList.join(", ")
+          //                           : holidayList.toString(),
+          //                       isImportant: true,
+          //                     ),
+          //                   ],
+          //                   if (isToday) ...[
+          //                     const SizedBox(height: 6),
+          //                     weatherAsync.when(
+          //                       data: (w) => _buildTextRow(
+          //                         label: "Weather",
+          //                         value: "${w.temperature}°C",
+          //                       ),
+          //                       loading: () => _buildTextRow(
+          //                         label: "Weather",
+          //                         value: "Loading...",
+          //                       ),
+          //                       error: (_, __) => const SizedBox.shrink(),
+          //                     ),
+          //                   ],
+          //                 ],
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+        ),
 
-          // Next Holiday Block
-          _buildUpcomingHoliday(calendarData, adDate, monthDaysData),
-        ],
-      ),
+        // Secondary Details block if it is today
+        // if (isToday) ...[
+        //   const SizedBox(height: 12),
+        //   _buildSunMetricsTimeline(sunAsync),
+        // ],
+
+        // Next Holiday Block
+        // _buildUpcomingHoliday(calendarData, adDate, monthDaysData),
+      ],
     );
   }
 
