@@ -1,3 +1,5 @@
+<img width="1206" height="2622" alt="simulator_screenshot_7AEBEB8F-1E16-4CFF-A354-5B30D69AAB03" src=" />
+
 # Bhitte Patro
 
 <p align="center">
@@ -19,13 +21,13 @@ Bhitte Patro is a modern, feature-rich Nepali calendar, scheduling, and news agg
     <tbody>
       <tr>
         <td style="padding: 15px; border: 1px solid #ccc; vertical-align: top;">
-          <img width="400" height="900" alt="simulator_screenshot_328A473F-2466-4690-8C58-AC1AC403F3F6" src="https://github.com/user-attachments/assets/efdb6c3d-90d0-419b-8333-5dfc27cad79a" style="max-width: 100%; height: auto;" />
+          <img width="400" height="900" alt="simulator_screenshot_328A473F-2466-4690-8C58-AC1AC403F3F6" src="https://github.com/user-attachments/assets/ce4ba580-7449-455b-b755-8b6a29ac86fc" style="max-width: 100%; height: auto;" />
         </td>
         <td style="padding: 15px; border: 1px solid #ccc; vertical-align: top;">
           <img width="400" height="900" alt="simulator_screenshot_9EF0CB89-20B5-480D-BFD5-58BE4F5F9948" src="https://github.com/user-attachments/assets/0e1732a1-3195-4620-a2eb-b084dc3906b2" style="max-width: 100%; height: auto;" />
         </td>
           <td style="padding: 15px; border: 1px solid #ccc; vertical-align: top;">
-          <img width="400" height="900" alt="simulator_screenshot_9EF0CB89-20B5-480D-BFD5-58BE4F5F9948" src="https://github.com/user-attachments/assets/a4f4e8e9-3cbc-4eff-bac9-295e262fe089" style="max-width: 100%; height: auto;" />
+          <img width="400" height="900" alt="simulator_screenshot_9EF0CB89-20B5-480D-BFD5-58BE4F5F9948" src="https://github.com/user-attachments/assets/485dabd1-fb2c-4ff0-8506-e3c1a85b12a4" style="max-width: 100%; height: auto;" />
         </td>
       </tr>
     </tbody>
