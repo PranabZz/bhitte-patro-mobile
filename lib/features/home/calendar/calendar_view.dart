@@ -114,13 +114,15 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
       _selectedMonth = todayBs['month']!;
       _selectedDay = todayBs['day']!;
     });
-    ref.read(selectedDateProvider.notifier).setSelectedDate(
-      SelectedDate(
-        day: _selectedDay!,
-        month: _selectedMonth!,
-        year: _selectedYear!,
-      ),
-    );
+    ref
+        .read(selectedDateProvider.notifier)
+        .setSelectedDate(
+          SelectedDate(
+            day: _selectedDay!,
+            month: _selectedMonth!,
+            year: _selectedYear!,
+          ),
+        );
   }
 
   void _initializeToday(Map<String, dynamic> calendarData) {
@@ -243,31 +245,46 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
     if (!monthDaysData.containsKey(_viewedYear.toString())) return;
     final months = monthDaysData[_viewedYear.toString()] as List<dynamic>;
     final daysInNewMonth = months[_viewedMonthIndex] as int;
-    
+
     if (_selectedDay != null) {
       if (_selectedDay! > daysInNewMonth) {
         _selectedDay = daysInNewMonth;
       }
       _selectedMonth = _viewedMonthIndex + 1;
       _selectedYear = _viewedYear;
-      
-      ref.read(selectedDateProvider.notifier).setSelectedDate(
-        SelectedDate(
-          day: _selectedDay!,
-          month: _selectedMonth!,
-          year: _selectedYear!,
-        ),
-      );
+
+      ref
+          .read(selectedDateProvider.notifier)
+          .setSelectedDate(
+            SelectedDate(
+              day: _selectedDay!,
+              month: _selectedMonth!,
+              year: _selectedYear!,
+            ),
+          );
     }
   }
 
-  String _getViewedEnglishMonthRange(Map<String, dynamic> monthDaysData, int daysInMonth) {
-    final startAd = NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, 1, monthDaysData);
-    final endAd = NepaliDateConverter.convertToAd(_viewedYear, _viewedMonthIndex + 1, daysInMonth, monthDaysData);
-    
+  String _getViewedEnglishMonthRange(
+    Map<String, dynamic> monthDaysData,
+    int daysInMonth,
+  ) {
+    final startAd = NepaliDateConverter.convertToAd(
+      _viewedYear,
+      _viewedMonthIndex + 1,
+      1,
+      monthDaysData,
+    );
+    final endAd = NepaliDateConverter.convertToAd(
+      _viewedYear,
+      _viewedMonthIndex + 1,
+      daysInMonth,
+      monthDaysData,
+    );
+
     final startMonthStr = _monthNameEn(startAd.month);
     final endMonthStr = _monthNameEn(endAd.month);
-    
+
     if (startAd.year == endAd.year) {
       return "$startMonthStr/$endMonthStr ${endAd.year}";
     } else {
@@ -275,10 +292,13 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
     }
   }
 
-  void _showMonthYearBottomSheet(BuildContext context, Map<String, dynamic> calendarData) {
+  void _showMonthYearBottomSheet(
+    BuildContext context,
+    Map<String, dynamic> calendarData,
+  ) {
     final monthDaysData = calendarData['monthDaysData'] as Map<String, dynamic>;
     final years = monthDaysData.keys.map((e) => int.parse(e)).toList()..sort();
-    
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -289,7 +309,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
       builder: (BuildContext context) {
         int tempYear = _viewedYear;
         int tempMonthIndex = _viewedMonthIndex;
-        
+
         return StatefulBuilder(
           builder: (context, setBottomSheetState) {
             return SafeArea(
@@ -298,7 +318,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                   left: AppSpace.medium,
                   right: AppSpace.medium,
                   top: AppSpace.medium,
-                  bottom: MediaQuery.of(context).viewInsets.bottom + AppSpace.medium,
+                  bottom:
+                      MediaQuery.of(context).viewInsets.bottom +
+                      AppSpace.medium,
                 ),
                 child: SingleChildScrollView(
                   child: Column(
@@ -318,7 +340,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                         style: AppTypography.boldSubtitle,
                       ),
                       const SizedBox(height: AppSpace.medium),
-                      
+
                       const Text("Year", style: AppTypography.boldBody),
                       const SizedBox(height: AppSpace.small),
                       SizedBox(
@@ -330,7 +352,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                             final y = years[index];
                             final isSelected = y == tempYear;
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4.0,
+                              ),
                               child: ChoiceChip(
                                 label: Text(_toNepaliNumber(y)),
                                 selected: isSelected,
@@ -342,9 +366,13 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                                   }
                                 },
                                 selectedColor: AppColors.darkBlue,
-                                backgroundColor: AppColors.grey.withOpacity(0.1),
+                                backgroundColor: AppColors.grey.withOpacity(
+                                  0.1,
+                                ),
                                 labelStyle: TextStyle(
-                                  color: isSelected ? AppColors.white : AppColors.black,
+                                  color: isSelected
+                                      ? AppColors.white
+                                      : AppColors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -352,42 +380,49 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                           },
                         ),
                       ),
-                      
+
                       const SizedBox(height: AppSpace.medium),
                       const Divider(color: AppColors.grey, thickness: 0.5),
                       const SizedBox(height: AppSpace.medium),
-                      
+
                       const Text("Month", style: AppTypography.boldBody),
                       const SizedBox(height: AppSpace.small),
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: 12,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
-                          childAspectRatio: 2.5,
-                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                              childAspectRatio: 2.5,
+                            ),
                         itemBuilder: (context, index) {
                           final isSelected = index == tempMonthIndex;
                           return InkWell(
                             onTap: () {
                               setBottomSheetState(() {
-                                  tempMonthIndex = index;
+                                tempMonthIndex = index;
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: isSelected ? AppColors.darkBlue : AppColors.grey.withOpacity(0.1),
+                                color: isSelected
+                                    ? AppColors.darkBlue
+                                    : AppColors.grey.withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               alignment: Alignment.center,
                               child: Text(
                                 _nepaliMonths[index],
                                 style: TextStyle(
-                                  color: isSelected ? AppColors.white : AppColors.black,
-                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                  color: isSelected
+                                      ? AppColors.white
+                                      : AppColors.black,
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
                                   fontSize: 12,
                                 ),
                               ),
@@ -395,16 +430,19 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                           );
                         },
                       ),
-                      
+
                       const SizedBox(height: AppSpace.large),
-                      
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Expanded(
                             child: TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: const Text("Cancel", style: TextStyle(color: AppColors.grey)),
+                              child: const Text(
+                                "Cancel",
+                                style: TextStyle(color: AppColors.grey),
+                              ),
                             ),
                           ),
                           const SizedBox(width: AppSpace.medium),
@@ -414,7 +452,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                                 setState(() {
                                   _viewedYear = tempYear;
                                   _viewedMonthIndex = tempMonthIndex;
-                                  _updateSelectedDayOnMonthChange(monthDaysData);
+                                  _updateSelectedDayOnMonthChange(
+                                    monthDaysData,
+                                  );
                                   _startRevertTimer(calendarData);
                                 });
                                 Navigator.pop(context);
@@ -426,7 +466,10 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              child: const Text("Apply", style: AppTypography.boldBody),
+                              child: const Text(
+                                "Apply",
+                                style: AppTypography.boldBody,
+                              ),
                             ),
                           ),
                         ],
@@ -453,7 +496,13 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
         border: Border.all(color: AppColors.grey.withOpacity(0.2), width: 0.5),
       ),
       child: IconButton(
-        icon: Icon(icon, size: 16, color: onPressed != null ? AppColors.black.withOpacity(0.8) : AppColors.grey),
+        icon: Icon(
+          icon,
+          size: 16,
+          color: onPressed != null
+              ? AppColors.black.withOpacity(0.8)
+              : AppColors.grey,
+        ),
         onPressed: onPressed,
         padding: const EdgeInsets.all(8),
         constraints: const BoxConstraints(),
@@ -579,7 +628,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
         final todayBs = NepaliDateConverter.convertToBs(now, monthDaysData);
 
         // Check if viewed month/year is outside of actual month/year
-        final bool isOutsideToday = (_viewedYear != todayBs['year'] || (_viewedMonthIndex + 1) != todayBs['month']);
+        final bool isOutsideToday =
+            (_viewedYear != todayBs['year'] ||
+            (_viewedMonthIndex + 1) != todayBs['month']);
 
         // Selected state values
         final selDay = _selectedDay ?? 1;
@@ -593,7 +644,8 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
           monthDaysData,
         );
 
-        final isTodayReal = (selDay == todayBs['day'] &&
+        final isTodayReal =
+            (selDay == todayBs['day'] &&
             selMonth == todayBs['month'] &&
             selYear == todayBs['year']);
 
@@ -650,7 +702,8 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                       children: [
                         // Left Column: Tappable Month/Year & English Range
                         InkWell(
-                          onTap: () => _showMonthYearBottomSheet(context, calendarData),
+                          onTap: () =>
+                              _showMonthYearBottomSheet(context, calendarData),
                           borderRadius: BorderRadius.circular(8),
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
@@ -661,15 +714,23 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                                   children: [
                                     // Animated month + year title
                                     AnimatedSwitcher(
-                                      duration: const Duration(milliseconds: 200),
+                                      duration: const Duration(
+                                        milliseconds: 200,
+                                      ),
                                       transitionBuilder: (child, anim) {
-                                        final offset = Tween<Offset>(
-                                          begin: Offset(0, _navDirection * 0.08),
-                                          end: Offset.zero,
-                                        ).animate(CurvedAnimation(
-                                          parent: anim,
-                                          curve: Curves.easeOut,
-                                        ));
+                                        final offset =
+                                            Tween<Offset>(
+                                              begin: Offset(
+                                                0,
+                                                _navDirection * 0.08,
+                                              ),
+                                              end: Offset.zero,
+                                            ).animate(
+                                              CurvedAnimation(
+                                                parent: anim,
+                                                curve: Curves.easeOut,
+                                              ),
+                                            );
                                         return FadeTransition(
                                           opacity: anim,
                                           child: SlideTransition(
@@ -680,7 +741,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                                       },
                                       child: Text(
                                         "${_nepaliMonths[_viewedMonthIndex]} ${_toNepaliNumber(_viewedYear)}",
-                                        key: ValueKey('$_viewedMonthIndex-$_viewedYear'),
+                                        key: ValueKey(
+                                          '$_viewedMonthIndex-$_viewedYear',
+                                        ),
                                         style: AppTypography.boldTitle,
                                       ),
                                     ),
@@ -697,13 +760,19 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                                 AnimatedSwitcher(
                                   duration: const Duration(milliseconds: 200),
                                   transitionBuilder: (child, anim) {
-                                    final offset = Tween<Offset>(
-                                      begin: Offset(0, _navDirection * 0.08),
-                                      end: Offset.zero,
-                                    ).animate(CurvedAnimation(
-                                      parent: anim,
-                                      curve: Curves.easeOut,
-                                    ));
+                                    final offset =
+                                        Tween<Offset>(
+                                          begin: Offset(
+                                            0,
+                                            _navDirection * 0.08,
+                                          ),
+                                          end: Offset.zero,
+                                        ).animate(
+                                          CurvedAnimation(
+                                            parent: anim,
+                                            curve: Curves.easeOut,
+                                          ),
+                                        );
                                     return FadeTransition(
                                       opacity: anim,
                                       child: SlideTransition(
@@ -713,16 +782,23 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                                     );
                                   },
                                   child: Text(
-                                    _getViewedEnglishMonthRange(monthDaysData, daysInMonth),
-                                    key: ValueKey('sub-$_viewedMonthIndex-$_viewedYear'),
-                                    style: AppTypography.caption.copyWith(color: AppColors.grey),
+                                    _getViewedEnglishMonthRange(
+                                      monthDaysData,
+                                      daysInMonth,
+                                    ),
+                                    key: ValueKey(
+                                      'sub-$_viewedMonthIndex-$_viewedYear',
+                                    ),
+                                    style: AppTypography.caption.copyWith(
+                                      color: AppColors.grey,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        
+
                         const Spacer(),
 
                         // Right Controls: Conditional "आज" button & Chevrons
@@ -733,7 +809,10 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                               backgroundColor: AppColors.darkBlue,
                               foregroundColor: AppColors.white,
                               elevation: 0,
-                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 8,
+                              ),
                               minimumSize: Size.zero,
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               shape: RoundedRectangleBorder(
@@ -766,10 +845,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                           .map(
                             (day) => Expanded(
                               child: Center(
-                                child: Text(
-                                  day,
-                                  style: AppTypography.boldBody,
-                                ),
+                                child: Text(day, style: AppTypography.boldBody),
                               ),
                             ),
                           )
@@ -785,14 +861,14 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                       itemCount: daysInMonth + firstDayWeekday,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 7,
-                        mainAxisSpacing: 4,
-                        crossAxisSpacing: 4,
-                      ),
+                            crossAxisCount: 7,
+                            mainAxisSpacing: 4,
+                            crossAxisSpacing: 4,
+                          ),
                       itemBuilder: (context, index) {
                         if (index < firstDayWeekday) return const SizedBox();
                         final day = index - firstDayWeekday + 1;
-                        
+
                         final adDate = NepaliDateConverter.convertToAd(
                           _viewedYear,
                           _viewedMonthIndex + 1,
@@ -800,20 +876,25 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                           monthDaysData,
                         );
 
-                        final isToday = (day == todayBs['day'] &&
+                        final isToday =
+                            (day == todayBs['day'] &&
                             _viewedMonthIndex == todayBs['month']! - 1 &&
                             _viewedYear == todayBs['year']);
 
                         final isWeekend = (index % 7 == 0 || index % 7 == 6);
-                        final holidayList = holidays?['$_viewedYear']?['${_viewedMonthIndex + 1}']?['$day'];
+                        final holidayList =
+                            holidays?['$_viewedYear']?['${_viewedMonthIndex + 1}']?['$day'];
                         final isHoliday = (holidayList != null) || isWeekend;
 
-                        final isSelected = (day == _selectedDay &&
+                        final isSelected =
+                            (day == _selectedDay &&
                             _selectedMonth == _viewedMonthIndex + 1 &&
                             _selectedYear == _viewedYear);
 
                         Color bgColor = Colors.transparent;
-                        Color textColor = isHoliday ? AppColors.red : AppColors.black;
+                        Color textColor = isHoliday
+                            ? AppColors.red
+                            : AppColors.black;
                         Border? border;
 
                         if (isToday) {
@@ -821,7 +902,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                           textColor = AppColors.white;
                         } else if (isSelected) {
                           bgColor = Colors.transparent;
-                          textColor = isHoliday ? AppColors.red : AppColors.darkBlue;
+                          textColor = isHoliday
+                              ? AppColors.red
+                              : AppColors.darkBlue;
                           border = Border.all(color: textColor, width: 2);
                         }
 
@@ -833,13 +916,15 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                               _selectedYear = _viewedYear;
                               _startRevertTimer(calendarData);
                             });
-                            ref.read(selectedDateProvider.notifier).setSelectedDate(
-                              SelectedDate(
-                                day: _selectedDay!,
-                                month: _selectedMonth!,
-                                year: _selectedYear!,
-                              ),
-                            );
+                            ref
+                                .read(selectedDateProvider.notifier)
+                                .setSelectedDate(
+                                  SelectedDate(
+                                    day: _selectedDay!,
+                                    month: _selectedMonth!,
+                                    year: _selectedYear!,
+                                  ),
+                                );
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -864,7 +949,9 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
                                   right: 2,
                                   child: DefaultTextStyle(
                                     style: TextStyle(
-                                      color: isToday ? textColor.withOpacity(0.7) : AppColors.grey,
+                                      color: isToday
+                                          ? textColor.withOpacity(0.7)
+                                          : AppColors.grey,
                                     ),
                                     child: Text(
                                       "${adDate.day}",
@@ -881,182 +968,198 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
 
                     const SizedBox(height: AppSpace.medium),
                     const Divider(color: AppColors.grey, thickness: 0.5),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: AppSpace.medium),
 
-                    // ── TWO-COLUMN DETAIL ──
-                    IntrinsicHeight(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-
-                          // ── LEFT COLUMN: Date + English date + Sun times ──
-                          SizedBox(
-                            width: 120,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Big Nepali day number
-                                Text(
-                                  _toNepaliNumber(selDay),
-                                  style: TextStyle(
-                                    fontSize: 72,
-                                    fontWeight: FontWeight.w800,
-                                    color: isTodayReal ? AppColors.red : AppColors.black,
-                                    height: 1.0,
-                                    letterSpacing: -2,
-                                  ),
-                                ),
-                                const SizedBox(height: 6),
-                                // Nepali month + year
-                                Text(
-                                  "${_nepaliMonths[selMonth - 1]} ${_toNepaliNumber(selYear)}",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: isTodayReal ? AppColors.red : AppColors.grey,
-                                    height: 1.3,
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                // English date
-                                Text(
-                                  "${_monthNameEn(adDate.month)} ${adDate.day}, ${adDate.year}",
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    color: AppColors.grey,
-                                    fontWeight: FontWeight.w400,
-                                    height: 1.3,
-                                  ),
-                                ),
-
-                                const Spacer(),
-
-                                // Sunrise / Sunset — only meaningful for today
-                                if (isTodayReal)
-                                  sunAsync.when(
-                                    data: (sun) => _buildSunRow(
-                                      sunrise: _formatTime24(sun.sunrise),
-                                      sunset: _formatTime24(sun.sunset),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpace.medium,
+                      ),
+                      child: IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // ── LEFT COLUMN: Date + English date + Sun times ──
+                            SizedBox(
+                              width: 120,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Big Nepali day number
+                                  Text(
+                                    _toNepaliNumber(selDay),
+                                    style: TextStyle(
+                                      fontSize: 72,
+                                      fontWeight: FontWeight.w800,
+                                      color: isTodayReal
+                                          ? AppColors.red
+                                          : AppColors.black,
+                                      height: 1.0,
+                                      letterSpacing: -2,
                                     ),
-                                    loading: () => _buildSunRow(sunrise: '--:--', sunset: '--:--'),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  // Nepali month + year
+                                  Text(
+                                    "${_nepaliMonths[selMonth - 1]} ${_toNepaliNumber(selYear)}",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: isTodayReal
+                                          ? AppColors.red
+                                          : AppColors.grey,
+                                      height: 1.3,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  // English date
+                                  Text(
+                                    "${_monthNameEn(adDate.month)} ${adDate.day}, ${adDate.year}",
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: AppColors.grey,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.3,
+                                    ),
+                                  ),
+
+                                  const Spacer(),
+
+                                  // Sunrise / Sunset — only meaningful for today
+                                  if (isTodayReal)
+                                    sunAsync.when(
+                                      data: (sun) => _buildSunRow(
+                                        sunrise: _formatTime24(sun.sunrise),
+                                        sunset: _formatTime24(sun.sunset),
+                                      ),
+                                      loading: () => _buildSunRow(
+                                        sunrise: '--:--',
+                                        sunset: '--:--',
+                                      ),
+                                      error: (_, __) => const SizedBox.shrink(),
+                                    ),
+                                ],
+                              ),
+                            ),
+
+                            // ── HAIRLINE DIVIDER ──
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: VerticalDivider(
+                                color: AppColors.grey.withOpacity(0.3),
+                                thickness: 0.5,
+                                width: 1,
+                              ),
+                            ),
+
+                            // ── RIGHT COLUMN: Weekday + details ──
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Weekday — primary headline
+                                  Text(
+                                    _getNepaliWeekdayName(adDate.weekday),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.black,
+                                      height: 1.1,
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 14),
+
+                                  // Moon phase
+                                  _buildDetailRow(
+                                    label:
+                                        "${moonInfo['icon']}  ${moonInfo['name']}",
+                                    sublabel: 'चन्द्र',
+                                  ),
+
+                                  const SizedBox(height: 10),
+
+                                  // Weather
+                                  weatherAsync.when(
+                                    data: (w) => _buildDetailRow(
+                                      label: '${w.temperature}°C',
+                                      sublabel: 'मौसम',
+                                    ),
+                                    loading: () => _buildDetailRow(
+                                      label: '--°C',
+                                      sublabel: 'मौसम',
+                                    ),
                                     error: (_, __) => const SizedBox.shrink(),
                                   ),
-                              ],
-                            ),
-                          ),
 
-                          // ── HAIRLINE DIVIDER ──
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: VerticalDivider(
-                              color: AppColors.grey.withOpacity(0.3),
-                              thickness: 0.5,
-                              width: 1,
-                            ),
-                          ),
+                                  // Holiday (only if present)
+                                  if (holidayList != null) ...[
+                                    const SizedBox(height: 10),
+                                    _buildDetailRow(
+                                      label: holidayList is List
+                                          ? (holidayList as List).join(', ')
+                                          : holidayList.toString(),
+                                      sublabel: 'बिदा',
+                                      labelColor: AppColors.red,
+                                    ),
+                                  ],
 
-                          // ── RIGHT COLUMN: Weekday + details ──
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                                  // Tithi (only if present)
+                                  if (tithiText.isNotEmpty) ...[
+                                    const SizedBox(height: 10),
+                                    _buildDetailRow(
+                                      label: tithiText,
+                                      sublabel: 'तिथि',
+                                    ),
+                                  ],
 
-                                // Weekday — primary headline
-                                Text(
-                                  _getNepaliWeekdayName(adDate.weekday),
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.black,
-                                    height: 1.1,
-                                  ),
-                                ),
+                                  const Spacer(),
 
-                                const SizedBox(height: 14),
-
-                                // Moon phase
-                                _buildDetailRow(
-                                  label: "${moonInfo['icon']}  ${moonInfo['name']}",
-                                  sublabel: 'चन्द्र',
-                                ),
-
-                                const SizedBox(height: 10),
-
-                                // Weather
-                                weatherAsync.when(
-                                  data: (w) => _buildDetailRow(
-                                    label: '${w.temperature}°C',
-                                    sublabel: 'मौसम',
-                                  ),
-                                  loading: () => _buildDetailRow(label: '--°C', sublabel: 'मौसम'),
-                                  error: (_, __) => const SizedBox.shrink(),
-                                ),
-
-                                // Holiday (only if present)
-                                if (holidayList != null) ...[
-                                  const SizedBox(height: 10),
-                                  _buildDetailRow(
-                                    label: holidayList is List
-                                        ? (holidayList as List).join(', ')
-                                        : holidayList.toString(),
-                                    sublabel: 'बिदा',
-                                    labelColor: AppColors.red,
-                                  ),
-                                ],
-
-                                // Tithi (only if present)
-                                if (tithiText.isNotEmpty) ...[
-                                  const SizedBox(height: 10),
-                                  _buildDetailRow(
-                                    label: tithiText,
-                                    sublabel: 'तिथि',
-                                  ),
-                                ],
-
-                                const Spacer(),
-
-                                // Globe view — minimal text button
-                                GestureDetector(
-                                  onTap: () => context.push(RoutePage.globe),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 20),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/satellite-4-svgrepo-com.svg',
-                                          width: 16,
-                                          height: 16,
-                                          colorFilter: const ColorFilter.mode(
-                                            AppColors.darkBlue,
-                                            BlendMode.srcIn,
+                                  // Globe view — minimal text button
+                                  GestureDetector(
+                                    onTap: () => context.push(RoutePage.globe),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 20),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(
+                                            'assets/satellite-4-svgrepo-com.svg',
+                                            width: 16,
+                                            height: 16,
+                                            colorFilter: const ColorFilter.mode(
+                                              AppColors.darkBlue,
+                                              BlendMode.srcIn,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 7),
-                                        const Text(
-                                          'Globe View',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700,
+                                          const SizedBox(width: 7),
+                                          const Text(
+                                            'Globe View',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.darkBlue,
+                                              letterSpacing: -0.2,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 4),
+                                          const Icon(
+                                            Icons.arrow_forward_ios_rounded,
+                                            size: 12,
                                             color: AppColors.darkBlue,
-                                            letterSpacing: -0.2,
                                           ),
-                                        ),
-                                        const SizedBox(width: 4),
-                                        const Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          size: 12,
-                                          color: AppColors.darkBlue,
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
 

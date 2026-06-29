@@ -8,31 +8,104 @@ import 'package:bhitte_patro/core/router/route_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:go_router/go_router.dart';
+import 'package:googleapis/areainsights/v1.dart';
 
-class NewsPage extends ConsumerWidget {
+class NewsPage extends ConsumerStatefulWidget {
   const NewsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<NewsPage> createState() => _NewsPageState();
+}
+
+class _NewsPageState extends ConsumerState<NewsPage> {
+  late FlutterTts _flutterTts;
+  bool _isPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initTts();
+  }
+
+  void _initTts() {
+    _flutterTts = FlutterTts();
+
+    _flutterTts.setStartHandler(() {
+      setState(() => _isPlaying = true);
+    });
+
+    _flutterTts.setCompletionHandler(() {
+      setState(() => _isPlaying = false);
+    });
+
+    _flutterTts.setErrorHandler((msg) {
+      setState(() => _isPlaying = false);
+    });
+  }
+
+  Future<void> _speakNews(List<dynamic> articles) async {
+    if (_isPlaying) {
+      await _flutterTts.stop();
+      setState(() => _isPlaying = false);
+      return;
+    }
+
+    // Configure language settings
+
+    await _flutterTts.setLanguage("ne-NP");
+    await _flutterTts.setPitch(1.0);
+    await _flutterTts.setSpeechRate(0.5); // Smooth conversational pacing
+
+    // Compile text blocks to read sequentially
+    StringBuffer buffer = StringBuffer();
+
+    if (articles.isNotEmpty) {
+      buffer.write("In other breaking news: ");
+      final totalBreakingCount = articles.length;
+      for (int i = 0; i < totalBreakingCount; i++) {
+        buffer.write("${articles[i].title} ");
+      }
+    } else {
+      buffer.write("No breaking news available.");
+    }
+
+    if (articles.length > 3) {
+      buffer.write("...and ${articles.length - 3} more.");
+    }
+
+    await _flutterTts.speak(buffer.toString());
+  }
+
+  @override
+  void dispose() {
+    _flutterTts.stop();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final newsAsyncValue = ref.watch(newsProvider);
     final goldSilverAsyncValue = ref.watch(goldSilverProvider);
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: newsAsyncValue.when(
-          data: (news) {
-            if (news.articles.isEmpty) {
-              return const Center(child: Text("No news available"));
-            }
+    return newsAsyncValue.when(
+      data: (news) {
+        if (news.articles.isEmpty) {
+          return const Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(child: Text("No news available")),
+          );
+        }
 
-            final shuffledArticles = List.from(news.articles)
-              ..shuffle(Random());
-            final heroArticle = shuffledArticles.first;
-            final otherArticles = shuffledArticles.skip(1).toList();
+        final shuffledArticles = List.from(news.articles)..shuffle(Random());
+        final heroArticle = shuffledArticles.first;
+        final otherArticles = shuffledArticles.skip(1).toList();
 
-            return RefreshIndicator(
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: RefreshIndicator(
               onRefresh: () async => ref.refresh(newsProvider),
               color: AppColors.darkBlue,
               child: ListView(
@@ -49,7 +122,7 @@ class NewsPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // 2. Premium Image-Overlay Hero Card (from image_7a5b2d.png)
+                  // 2. Premium Image-Overlay Hero Card
                   InkWell(
                     onTap: () => context.push(
                       RoutePage.newsDetail,
@@ -163,21 +236,41 @@ class NewsPage extends ConsumerWidget {
                   ),
                 ],
               ),
-            );
-          },
-          loading: () => const Center(
-            child: CircularProgressIndicator(
-              color: AppColors.darkBlue,
-              strokeWidth: 2,
             ),
           ),
-          error: (err, stack) => Center(
-            child: Text('Error loading feed: $err', style: AppTypography.body),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () => _speakNews(shuffledArticles),
+            backgroundColor: _isPlaying ? AppColors.red : AppColors.darkBlue,
+            elevation: 4,
+            shape: CircleBorder(),
+            label: Icon(
+              _isPlaying ? Icons.stop_rounded : Icons.headphones_rounded,
+              color: Colors.white,
+            ),
           ),
+        );
+      },
+      loading: () => const Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: CircularProgressIndicator(
+            color: AppColors.darkBlue,
+            strokeWidth: 2,
+          ),
+        ),
+      ),
+      error: (err, stack) => Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Text('Error loading feed: $err', style: AppTypography.body),
         ),
       ),
     );
   }
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Sub-widgets below remain unchanged for UI consistency
+  // ───────────────────────────────────────────────────────────────────────────
 
   Widget _buildDetailedMarketTracker({
     required AsyncValue<List<GoldSilverResponse>> data,
@@ -194,9 +287,7 @@ class NewsPage extends ConsumerWidget {
         final silverPrice = latest.rates.silver;
         final currency = latest.currency;
         final unit = latest.unit;
-        final source = latest.source;
 
-        // Compute gold change if we have at least 2 entries
         double? goldChange;
         double? goldPct;
         double? silverChange;
@@ -223,8 +314,9 @@ class NewsPage extends ConsumerWidget {
           }
         }
         final bool isGoldPositive = (goldChange ?? 0) >= 0;
-        final Color goldTrendColor =
-            isGoldPositive ? AppColors.green : AppColors.red;
+        final Color goldTrendColor = isGoldPositive
+            ? AppColors.green
+            : AppColors.red;
         final String goldChangeTxt = goldChange != null
             ? '${isGoldPositive ? '+' : ''}${goldChange.toStringAsFixed(0)}'
             : '—';
@@ -233,8 +325,9 @@ class NewsPage extends ConsumerWidget {
             : '—';
 
         final bool isSilverPositive = (silverChange ?? 0) >= 0;
-        final Color silverTrendColor =
-            isSilverPositive ? AppColors.green : AppColors.red;
+        final Color silverTrendColor = isSilverPositive
+            ? AppColors.green
+            : AppColors.red;
         final String silverChangeTxt = silverChange != null
             ? '${isSilverPositive ? '+' : ''}${silverChange.toStringAsFixed(0)}'
             : '—';
@@ -263,7 +356,6 @@ class NewsPage extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // ── Header ──────────────────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 14, 16, 4),
                   child: Row(
@@ -288,8 +380,6 @@ class NewsPage extends ConsumerWidget {
                     ],
                   ),
                 ),
-
-                // ── Gold Row ─────────────────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
                   child: _buildMetalRow(
@@ -306,13 +396,10 @@ class NewsPage extends ConsumerWidget {
                     showChange: goldChange != null,
                   ),
                 ),
-
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Divider(height: 1, color: Color(0xFFF1F5F9)),
                 ),
-
-                // ── Silver Row ───────────────────────────────────────────────
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
                   child: _buildMetalRow(
@@ -330,7 +417,6 @@ class NewsPage extends ConsumerWidget {
                     isSilver: true,
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
                   child: Row(
@@ -361,7 +447,6 @@ class NewsPage extends ConsumerWidget {
     );
   }
 
-  /// One row for a metal (Gold or Silver) inside the tracker card.
   Widget _buildMetalRow({
     required String label,
     required String price,
@@ -379,7 +464,6 @@ class NewsPage extends ConsumerWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Metal icon badge
         Container(
           width: 42,
           height: 42,
@@ -398,7 +482,6 @@ class NewsPage extends ConsumerWidget {
           ),
         ),
         const SizedBox(width: 12),
-        // Label + price
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -425,7 +508,6 @@ class NewsPage extends ConsumerWidget {
             ],
           ),
         ),
-        // Change badge (only for gold when data available)
         if (showChange)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
@@ -488,7 +570,6 @@ class NewsPage extends ConsumerWidget {
     );
   }
 
-  /// Shimmer-like placeholder shown while provider loads.
   Widget _buildTrackerShimmer() {
     return Container(
       height: 160,
@@ -505,7 +586,6 @@ class NewsPage extends ConsumerWidget {
     );
   }
 
-  /// Error fallback for the tracker card.
   Widget _buildTrackerError({required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
@@ -529,7 +609,6 @@ class NewsPage extends ConsumerWidget {
     );
   }
 
-  /// Premium Text-Overlay Container (Matches image_7a5b2d.png Hero Design)
   Widget _buildImageOverlayHero(dynamic article) {
     return Container(
       height: 320,
@@ -539,7 +618,6 @@ class NewsPage extends ConsumerWidget {
       ),
       child: Stack(
         children: [
-          // Background Image
           if (article.imageUrl.isNotEmpty)
             Positioned.fill(
               child: ClipRRect(
@@ -547,8 +625,6 @@ class NewsPage extends ConsumerWidget {
                 child: Image.network(article.imageUrl, fit: BoxFit.cover),
               ),
             ),
-
-          // Vignette Gradient Blend
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -566,8 +642,6 @@ class NewsPage extends ConsumerWidget {
               ),
             ),
           ),
-
-          // Floating Topic Chip
           Positioned(
             top: 16,
             right: 16,
@@ -588,8 +662,6 @@ class NewsPage extends ConsumerWidget {
               ),
             ),
           ),
-
-          // Text Content Block
           Positioned(
             bottom: 20,
             left: 20,
@@ -658,7 +730,6 @@ class NewsPage extends ConsumerWidget {
     );
   }
 
-  /// Compact Cards for Horizontal Scrolling Block
   Widget _buildHorizontalGridItem(dynamic article) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -695,7 +766,6 @@ class NewsPage extends ConsumerWidget {
     );
   }
 
-  /// Clean, Flat Row for Lower Stream Feed List
   Widget _buildFeedItem(dynamic article) {
     return Row(
       children: [

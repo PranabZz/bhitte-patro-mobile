@@ -97,12 +97,12 @@ class _GoldSilverBodyState extends State<_GoldSilverBody> {
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
                   titlePadding: EdgeInsets.only(left: hPad, bottom: 12),
+                  centerTitle: true,
                   title: Text(
                     'Gold & Silver',
                     style: AppTypography.title.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
                 actions: [
