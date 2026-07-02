@@ -98,7 +98,7 @@ class _NewsPageState extends ConsumerState<NewsPage> {
           );
         }
 
-        final shuffledArticles = List.from(news.articles)..shuffle(Random());
+        final shuffledArticles = List.from(news.articles);
         final heroArticle = shuffledArticles.first;
         final otherArticles = shuffledArticles.skip(1).toList();
 
